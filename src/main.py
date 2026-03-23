@@ -1,4 +1,4 @@
-# src/main.py — STRING GAME CYBER EDITION  (v3 — redesigned UI)
+
 import tkinter as tk
 import threading
 import time
@@ -11,7 +11,7 @@ from settings import *
 from game_logic import GameState, gen_string
 from algorithms import Stats, best_move
 
-# ── Colour palette ────────────────────────────────────────────────────────────
+
 BG_SPLASH  = "#020509"
 BG_GAME    = "#030612"
 TEAL       = "#00cfff"
@@ -22,7 +22,6 @@ STRIP_BG   = "#060a1e"
 _HERE         = os.path.dirname(os.path.abspath(__file__))
 BG_IMAGE_PATH = os.path.join(_HERE, "game_bg.png")
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
 def rule_text(a, b):
     t = a + b
     if t > 7:   return f"{a}+{b}={t} > 7  —  becomes 1  ✚ +1 to YOU"
@@ -52,9 +51,6 @@ def _load_photo(path, w, h, brightness=1.0):
         return None
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  Animated button base
-# ══════════════════════════════════════════════════════════════════════════════
 class _AnimBtn(tk.Canvas):
     def __init__(self, parent, text, command, color, w, h, fs, bg_col, **kw):
         super().__init__(parent, width=w, height=h,
@@ -168,7 +164,6 @@ class SmallGlowButton(_AnimBtn):
                          font=("Courier New",self.fs,"bold"))
 
 
-# ── Splash particles ──────────────────────────────────────────────────────────
 class Particle:
     COLS=["#00cfff","#00ff88","#7b2fff","#004466","#002244"]
     def __init__(self,W,H): self.W,self.H=W,H; self.reset(True)
@@ -188,9 +183,6 @@ class Particle:
         return f"#{int(r*a+br*(1-a)):02x}{int(g*a+bg_*(1-a)):02x}{int(b*a+bb*(1-a)):02x}"
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  Splash Screen  — PLAY · HOW TO PLAY · EXIT only
-# ══════════════════════════════════════════════════════════════════════════════
 class SplashScreen(tk.Frame):
     def __init__(self, parent, on_play, on_exit):
         super().__init__(parent, bg=BG_SPLASH)
@@ -318,9 +310,6 @@ class SplashScreen(tk.Frame):
         self._running=False; self.destroy()
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  Game-screen widgets
-# ══════════════════════════════════════════════════════════════════════════════
 
 class CyberDropdown(tk.Frame):
     def __init__(self,parent,variable,options,color=TEAL,**kw):
@@ -456,9 +445,8 @@ class ArrowConnector(tk.Canvas):
                          arrowshape=(7,9,4))
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+
 #  Main App
-# ══════════════════════════════════════════════════════════════════════════════
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -487,7 +475,6 @@ class App(tk.Tk):
     def _back_to_menu(self):
         self.active=False; self._gf.destroy(); self._show_splash()
 
-    # ── Build ─────────────────────────────────────────────────────────────────
     def _build(self,root):
         self._build_bg(root)
         self._build_header(root)
@@ -578,13 +565,12 @@ class App(tk.Tk):
                        highlightbackground=dim(TEAL,0.4))
         outer.pack(fill="x",padx=16,pady=(6,0)); outer.lift()
 
-        # Scrollable canvas so large strings don't break layout
         scroll_h=tk.Scrollbar(outer,orient="horizontal")
         self._strip_canvas=tk.Canvas(outer,bg=STRIP_BG,highlightthickness=0,
                                      height=100,xscrollcommand=scroll_h.set)
         scroll_h.config(command=self._strip_canvas.xview)
         self._strip_canvas.pack(fill="x")
-        # Only show scrollbar when needed — packed after canvas
+       
         scroll_h.pack(fill="x")
         self._strip_canvas.bind("<Configure>",self._on_strip_resize)
         self._strip_bg_id=None; self._strip_photo=None
@@ -595,7 +581,7 @@ class App(tk.Tk):
         self.strip_frame.bind("<Configure>",self._on_inner_resize)
 
     def _on_strip_resize(self,e):
-        # Keep strip centred when it fits; scroll when it doesn't
+       
         self._strip_canvas.coords("sw",max(e.width//2,0),50)
         self._strip_canvas.itemconfig("sw",anchor="center")
         ph=_load_photo(BG_IMAGE_PATH,e.width,100,0.45)
@@ -679,7 +665,6 @@ class App(tk.Tk):
         tk.Label(f,textvariable=self.v_exp,bg=DARK_PANEL,fg=dim(WHITE,0.3),
                  font=("Courier New",7),justify="left",wraplength=245).pack(anchor="w",padx=12)
 
-    # ── Pulse ─────────────────────────────────────────────────────────────────
     def _start_pulse(self):
         self._pulse_idx=(self._pulse_idx+1)%4
         try:
@@ -688,7 +673,6 @@ class App(tk.Tk):
             self.after(400,self._start_pulse)
         except tk.TclError: pass
 
-    # ── Game flow ─────────────────────────────────────────────────────────────
     def _setup_screen(self):
         self.lbl_status.config(text="PRESS  ▶ NEW GAME  TO START",fg=NEON_Y)
 
