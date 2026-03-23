@@ -2,7 +2,7 @@
 
 A two-player number-string strategy game where you compete against an AI opponent powered by Minimax or Alpha-Beta pruning. Built with Python and Pygame.
 
-![String Game Screenshot](game_bg.png)
+
 
 ---
 
