@@ -60,8 +60,8 @@ def run(seed=42):
             "cpu_wins":  sum(g["winner"] == "cpu"  for g in games),
             "opp_wins":  sum(g["winner"] == "opp"  for g in games),
             "draws":     sum(g["winner"] == "draw" for g in games),
-            "avg_gen":   round(sum(g["nodes_gen"]  for g in games) / TOTAL_GAMES),
-            "avg_eval":  round(sum(g["nodes_eval"] for g in games) / TOTAL_GAMES),
+            "avg_gen":   round(sum(g["nodes_gen"]  for g in games) / TOTAL_GAMES, 2),
+            "avg_eval":  round(sum(g["nodes_eval"] for g in games) / TOTAL_GAMES, 2),
             "avg_time":  round(sum(g["avg_time"]   for g in games) / TOTAL_GAMES, 6),
         }
     return output
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     print("Running…")
     results = run()
     
-    output_path = os.path.join("..", "docs", "experiments_results.json")
+    output_path = os.path.join("docs", "experiments_results.json")
     with open(output_path, "w") as file:
         json.dump(results, file, indent=2)
         
